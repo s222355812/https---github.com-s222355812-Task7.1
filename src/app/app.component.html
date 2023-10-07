@@ -1,0 +1,38 @@
+
+<div class="example-button-container">
+  <button mat-fab (click)="addApartments()">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+<div style="margin: 100px 500px 0px;border: 10px solid #954646;border-radius: 15px;">
+
+<mat-grid-list cols="4" rowHeight="100px">
+  <mat-grid-tile
+      *ngFor="let apartment of apartments"
+      [colspan]="'1'"
+      [rowspan]="'1'"
+      [style.background]="apartment.status?apartment.color:'black'" 
+      [style.color]="apartment.status?'black':'white'" 
+      (click)="openApartmentDialog(apartment)">
+    {{apartment.apartmentNumber}}
+  </mat-grid-tile>
+</mat-grid-list>
+<ng-template let-data #apartmentDialog>
+  <h2 mat-dialog-title>Apartment {{data.apartmentNumber}}</h2>
+  <div mat-dialog-content>
+    <p>Status: off 
+      <mat-slide-toggle [(ngModel)]="data.status" (change)="updateTimestamp(data)"> on</mat-slide-toggle>
+    </p>
+    
+    <p>Color:
+      <mat-form-field appearance="fill">
+         <input matInput [ngxMatColorPicker]="picker" [disabled]="!data.status" [(ngModel)]="data.color">
+        <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
+        <ngx-mat-color-picker #picker [touchUi]="false" [color]="color"></ngx-mat-color-picker>
+      </mat-form-field>
+    </p>
+    <p style="font-size: 13px;margin-top: 10px!important;">Last Action time: {{data.lastActionTime}}
+    </p>
+  </div>
+</ng-template>
+</div>
